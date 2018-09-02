@@ -39,7 +39,7 @@ object OverlayPicker: EntryStartup {
     fun handleSamsung(ctxt: Context) {
         if(vendorFp == null) return
 
-        if(vendorFp.matches(Regex(".*(crown|star)[q2]*lte.*")) ||
+        if(vendorFp.matches(Regex(".*(crown|star|star2)*lte.*")) ||
                 vendorFp.matches(Regex(".*(SC-0[23]K|SCV3[89]).*"))) {
             setOverlayEnabled("me.phh.treble.overlay.samsung.s9.systemui", true)
         }
