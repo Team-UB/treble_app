@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+#Change DIR to app path
+cd "${0%/*}"
 
 if [ -d /usr/lib/jvm/java-8-openjdk-amd64/bin/ ];then
 export PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin/:$PATH
