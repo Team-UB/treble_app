@@ -22,30 +22,51 @@ class Samsung: EntryStartup {
     val spListener = SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
         when(key) {
             SamsungSettings.highBrightess -> {
-                val value = true
+                val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.samsung.full_brightness", value.toString())
             }
             SamsungSettings.gloveMode -> {
                 val value = sp.getBoolean(key, false)
-                val cmd = "glove_mode,1"
+                val cmd = if(value) "glove_mode,1" else "glove_mode,0"
                 val ret = tsCmd(cmd)
+                Log.e("PHH", "Setting glove mode to $cmd got $ret")
             }
             SamsungSettings.audioStereoMode -> {
                 val value = sp.getBoolean(key, false)
-                AudioSystem.setParameters("Dualspk=1")
-                AudioSystem.setParameters("SpkAmpLPowerOn=1")
-                AudioSystem.setParameters("ProximitySensorClosed=0")
+                if(value) {
+                    AudioSystem.setParameters("Dualspk=1")
+                    AudioSystem.setParameters("SpkAmpLPowerOn=1")
+                    AudioSystem.setParameters("ProximitySensorClosed=0")
+                } else {
+                    AudioSystem.setParameters("Dualspk=0")
+                    AudioSystem.setParameters("SpkAmpLPowerOn=0")
+                }
+            }
+            SamsungSettings.wirelessChargingTransmit -> {
+                val value = if(sp.getBoolean(key, false)) "1" else "0"
+                try {
+                    File("/sys/devices/platform/battery/power_supply/battery/wc_tx_en").writeText(value + "\n")
+                } catch(e: Exception) {
+                    Log.e("PHH", "Failed setting wireless charging transmit", e)
+                }
             }
         }
     }
 
     override fun startup(ctxt: Context) {
+        if (!SamsungSettings.enabled()) return
+
+        //Reset wirelesss charging transmit at every boot
         val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
+
+        sp.edit().putBoolean(SamsungSettings.wirelessChargingTransmit, false).apply()
+
         sp.registerOnSharedPreferenceChangeListener(spListener)
 
         //Refresh parameters on boot
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.highBrightess)
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.gloveMode)
+        spListener.onSharedPreferenceChanged(sp, SamsungSettings.audioStereoMode)
         AudioSystem.setParameters("SpkAmpLPowerOn=1")
         AudioSystem.setParameters("Dualspk=1")
         AudioSystem.setParameters("ProximitySensorClosed=0")
