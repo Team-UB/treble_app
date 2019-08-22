@@ -71,6 +71,7 @@ class Samsung: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.highBrightess)
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.gloveMode)
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.audioStereoMode)
+        spListener.onSharedPreferenceChanged(sp, SamsungSettings.doubleTapToWake)
         AudioSystem.setParameters("SpkAmpLPowerOn=1")
         AudioSystem.setParameters("Dualspk=1")
         AudioSystem.setParameters("ProximitySensorClosed=0")
