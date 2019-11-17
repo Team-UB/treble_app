@@ -8,6 +8,10 @@ if [ -d /usr/lib/jvm/java-8-openjdk-amd64/bin/ ];then
 export PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin/:$PATH
 fi
 
+if [ -d /usr/lib/jvm/java-8-openjdk-amd64/bin/ ];then
+export PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin/:$PATH
+fi
+
 if [ -z "$ANDROID_HOME" ];then
     export ANDROID_HOME=$PWD/sdk
 fi

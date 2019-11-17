@@ -72,9 +72,6 @@ class Samsung: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.gloveMode)
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.audioStereoMode)
         spListener.onSharedPreferenceChanged(sp, SamsungSettings.doubleTapToWake)
-        AudioSystem.setParameters("SpkAmpLPowerOn=1")
-        AudioSystem.setParameters("Dualspk=1")
-        AudioSystem.setParameters("ProximitySensorClosed=0")
         Log.e("PHH", "Samsung TS: ${tsCmd("get_chip_vendor")}:${tsCmd("get_chip_name")}")
 
         Log.e("PHH", "Samsung TS: Supports glove_mode ${tsCmdExists("glove_mode")}")
@@ -84,6 +81,9 @@ class Samsung: EntryStartup {
             try {
                 ctxt.packageManager
                         .setApplicationEnabledSetting(malware, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, 0)
+            } catch (t: Throwable) { }
+        }
+
             } catch (t: Throwable) { }
         }
 
