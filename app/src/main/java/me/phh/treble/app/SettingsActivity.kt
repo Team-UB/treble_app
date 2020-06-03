@@ -55,6 +55,12 @@ class SettingsActivity : PreferenceActivity() {
             target.removeIf { it.fragment == SamsungSettingsFragment::class.java.name }
         if (!XiaomiSettings.enabled())
             target.removeIf { it.fragment == XiaomiSettingsFragment::class.java.name }
+        if (!OppoSettings.enabled())
+            target.removeIf { it.fragment == OppoSettingsFragment::class.java.name }
+        if (!QualcommSettings.enabled())
+            target.removeIf { it.fragment == QualcommSettingsFragment::class.java.name }
+        if (!VsmartSettings.enabled())
+            target.removeIf { it.fragment == VsmartSettingsFragment::class.java.name }
     }
 
     /**
@@ -70,6 +76,9 @@ class SettingsActivity : PreferenceActivity() {
                 || MiscSettingsFragment::class.java.name == fragmentName
                 || SamsungSettingsFragment::class.java.name == fragmentName
                 || XiaomiSettingsFragment::class.java.name == fragmentName
+                || OppoSettingsFragment::class.java.name == fragmentName
+                || QualcommSettingsFragment::class.java.name == fragmentName
+                || VsmartSettingsFragment::class.java.name == fragmentName
     }
 
     companion object {

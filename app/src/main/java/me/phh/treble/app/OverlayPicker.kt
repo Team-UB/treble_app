@@ -23,21 +23,19 @@ object OverlayPicker: EntryStartup {
         }
     }
 
-    private fun handleHtc(ctxt: Context) {
-        //HTC U11+
-        if (vendorFp == null) return
-
-        if (vendorFp.contains("htc_ocm")) {
-            setOverlayEnabled("me.phh.treble.overlay.navbar", true)
-            val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
-            sp.edit().putBoolean(MiscSettings.forceNavbar, true).apply()
-        }
-    }
-
     private fun enableLte(ctxt: Context) {
         //TODO: List here all non-LTE platforms
         if ("mt6580" != platform)
             setOverlayEnabled("me.phh.treble.overlay.telephony.lte", true)
+    }
+
+    fun handleNokia(ctxt: Context) {
+        if(vendorFp == null) return
+		
+        //Nokia 8.1/X7 [PNX]
+        if(vendorFp.matches(Regex("Nokia/Phoenix.*"))) {
+            setOverlayEnabled("me.phh.treble.overlay.nokia.pnx_8_1_x7.systemui", true)
+        }
     }
 
     fun handleSamsung(ctxt: Context) {
@@ -61,8 +59,8 @@ object OverlayPicker: EntryStartup {
         om = IOverlayManager.Stub.asInterface(
                 ServiceManager.getService("overlay"))
 
-        handleHtc(ctxt)
         enableLte(ctxt)
+        handleNokia(ctxt)
         handleSamsung(ctxt)
         handleXiaomi(ctxt)
 

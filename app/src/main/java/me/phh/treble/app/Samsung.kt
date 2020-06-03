@@ -54,6 +54,26 @@ class Samsung: EntryStartup {
                 val cmd = if(sp.getBoolean(key, false)) "aot_enable,1" else "aot_enable,0"
                 tsCmd(cmd)
             }
+            SamsungSettings.extraSensors -> {
+                val value = if(sp.getBoolean(key, false)) "true" else " false"
+                SystemProperties.set("persist.sys.phh.samsung_sensors", value)
+            }
+            SamsungSettings.colorspace -> {
+                val value = if(sp.getBoolean(key, false)) "true" else " false"
+                SystemProperties.set("persist.sys.phh.samsung_colorspace", value)
+            }
+            SamsungSettings.brokenFingerprint -> {
+                val value = if(sp.getBoolean(key, false)) "1" else " 0"
+                SystemProperties.set("persist.sys.phh.samsung_fingerprint", value)
+            }
+            SamsungSettings.backlightMultiplier -> {
+                val value = sp.getString(key, "-1")
+                SystemProperties.set("persist.sys.phh.samsung_backlight", value)
+            }
+            SamsungSettings.cameraIds -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.samsung.camera_ids", value.toString())
+            }
         }
     }
 
@@ -76,6 +96,8 @@ class Samsung: EntryStartup {
 
         Log.e("PHH", "Samsung TS: Supports glove_mode ${tsCmdExists("glove_mode")}")
         Log.e("PHH", "Samsung TS: Supports aod_enable ${tsCmdExists("aod_enable")}")
+
+	tsCmd("check_connection")
 
         for(malware in listOf("com.dti.globe", "com.singtel.mysingtel", "com.LogiaGroup.LogiaDeck", "com.mygalaxy")) {
             try {
